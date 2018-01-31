@@ -27,6 +27,21 @@ var server = http.createServer(function(request, response){
     response.setHeader('Content-Type', 'text/html;charset=utf-8')
     response.write(string) //给浏览器返回符合html格式的字符串
     response.end() //要有end 不然会一直等
+  }else if(path === '/sign_up' && method==='GET'){
+    let string = fs.readFileSync('./sign_up.html', 'utf8')//同步读取文件
+    response.statusCode = 200 
+    response.setHeader('Content-Type', 'text/html;charset=utf-8')
+    response.write(string) //给浏览器返回符合html格式的字符串
+    response.end() //要有end 不然会一直等
+  }else if(path ==='/sign_up' && method==='POST'){
+    const chunks = [];
+    request.on('data', chunk => chunks.push(chunk));
+    request.on('end', () => {
+    const data = Buffer.concat(chunks);
+    console.log('Data: ', data);
+  })
+    response.statusCode = 200 
+    response.end()
   }else if(path==='/main.js'){ //没有点 ，因为http路径都是绝对路径
     let string = fs.readFileSync('./main.js', 'utf8')
     response.statusCode = 200
